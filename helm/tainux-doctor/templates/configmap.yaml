@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tainux-doctor-config
+  namespace: {{ .Values.namespace }}
+data:
+  TAINUX_DEFAULT_NAMESPACE: {{ .Values.config.defaultNamespace | quote }}
+  TAINUX_ALLOWED_NAMESPACES: {{ .Values.config.allowedNamespaces | quote }}
+  TAINUX_DIAGNOSTICS_MODE: {{ .Values.config.diagnosticsMode | quote }}
+  TAINUX_CORS_ALLOW_ORIGINS_RAW: {{ .Values.config.corsAllowOriginsRaw | quote }}

@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: tainux-doctor-ui
+  namespace: {{ .Values.namespace }}
+spec:
+  to:
+    kind: Service
+    name: tainux-doctor-ui
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tainux-doctor-api
+  namespace: tainux-doctor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tainux-doctor-api
+  template:
+    metadata:
+      labels:
+        app: tainux-doctor-api
+    spec:
+      serviceAccountName: tainux-doctor-api
+      containers:
+        - name: api
+          image: ghcr.io/tainuxsoftware/tainux-doctor-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tainux-doctor-config
+            - secretRef:
+                name: tainux-doctor-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

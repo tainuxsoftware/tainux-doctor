@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tainux-doctor-api
+  namespace: tainux-doctor
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: tainux-doctor-reader
+  namespace: tainux-doctor
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "events", "services", "configmaps", "persistentvolumeclaims"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tainux-doctor-reader-binding
+  namespace: tainux-doctor
+subjects:
+  - kind: ServiceAccount
+    name: tainux-doctor-api
+    namespace: tainux-doctor
+roleRef:
+  kind: Role
+  name: tainux-doctor-reader
+  apiGroup: rbac.authorization.k8s.io

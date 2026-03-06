@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tainux-doctor-reader-binding
+  namespace: {{ .Values.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: tainux-doctor-api
+    namespace: {{ .Values.namespace }}
+roleRef:
+  kind: Role
+  name: tainux-doctor-reader
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tainux-doctor-ui
+  namespace: tainux-doctor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tainux-doctor-ui
+  template:
+    metadata:
+      labels:
+        app: tainux-doctor-ui
+    spec:
+      containers:
+        - name: ui
+          image: ghcr.io/tainuxsoftware/tainux-doctor-ui:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi

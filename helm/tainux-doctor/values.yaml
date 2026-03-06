@@ -1,0 +1,15 @@
+namespace: tainux-doctor
+
+api:
+  image: ghcr.io/tainuxsoftware/tainux-doctor-api:latest
+  replicas: 1
+
+ui:
+  image: ghcr.io/tainuxsoftware/tainux-doctor-ui:latest
+  replicas: 1
+
+config:
+  defaultNamespace: default
+  allowedNamespaces: ""
+  diagnosticsMode: rules
+  corsAllowOriginsRaw: "*"
